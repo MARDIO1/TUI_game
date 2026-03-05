@@ -1,5 +1,8 @@
 package core
 
+/*master.go
+游戏主干文件，仍然和bubble库耦合
+Master类，目前是输入输出的数据*/
 import (
 	"TUI_game/input"
 	"TUI_game/output"
@@ -11,16 +14,16 @@ import (
 type TickMsg time.Time
 
 type Master struct {
-	In      *input.Ctrl
-	Out     *output.Ctrl
-	Tick_ms int
+	In      *input.Ctrl //沟通键盘输入的脚手架
+	Out     *output.Ctrl //沟通TUI的脚手架
+	Tick_ms int       // 设置物理心跳为 10ms (100Hz)
 }
 
 func Initial() *Master {
 	return &Master{
-		In:      input.New(),
+		In:      input.New(),//调用构造函数
 		Out:     output.New(),
-		Tick_ms: 10,
+		Tick_ms: 10,//初始值
 	}
 }
 
