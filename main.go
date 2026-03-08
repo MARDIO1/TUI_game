@@ -11,7 +11,7 @@ import (
 func main() {
 	//播放固定音乐的调用方式
 	bgmPlayer := output.NewPlayer()
-	err := bgmPlayer.Play("assets/audio/pathos/AnimenzCallOfSilence.mp3")
+	err := bgmPlayer.Play("AnimenzCallOfSilence")
 	if err != nil {
 		panic(err)
 	}
