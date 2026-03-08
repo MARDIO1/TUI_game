@@ -1,1 +1,9 @@
+# 忽略cline插件规则
 .clinerules/
+
+# 忽略 Go 调试产生的临时文件
+__debug_bin.exe
+__debug_bin
+
+# 忽略所有编译出来的 Windows 可执行文件
+*.exe
