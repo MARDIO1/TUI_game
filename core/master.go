@@ -14,17 +14,28 @@ import (
 type TickMsg time.Time
 
 type Master struct {
-	In      *input.Ctrl //沟通键盘输入的脚手架
-	Out     *output.Ctrl //沟通TUI的脚手架
-	Tick_ms int       // 设置物理心跳为 10ms (100Hz)
+	In      *input.Ctrl  // 输入组件
+	Out     *output.Ctrl // 输出组件
+	Printer *Printer     // 打字机组件
+	Tick_ms int          // 心跳间隔 10ms (100Hz)
 }
 
 func Initial() *Master {
-	return &Master{
-		In:      input.New(),//调用构造函数
+	m := &Master{
+		In:      input.New(),
 		Out:     output.New(),
-		Tick_ms: 10,//初始值
+		Printer: NewPrinter(),
+		Tick_ms: 10,
 	}
+	
+	// 测试数据 - 使用更慢的速度和更短的文本
+	m.Printer.Set([]Text{
+		{Time: 0.5, Text: "Test."},      // 每个字符0.5秒
+		{Time: 0.3, Text: "Hello."},     // 每个字符0.3秒
+		{Time: 0.4, Text: "World!"},     // 每个字符0.4秒
+	})
+	
+	return m
 }
 
 func (m *Master) Init() tea.Cmd {
@@ -32,8 +43,16 @@ func (m *Master) Init() tea.Cmd {
 }
 
 func (m *Master) run() {
-	val := m.In.Get()
-	m.Out.Set("V2 Engine 100Hz | Input: " + val)
+	if m.Printer.Active() {
+		// 更新打字机
+		m.Printer.Update(float64(m.Tick_ms) / 1000.0)
+		// 显示打字机文本
+		m.Out.Set(m.Printer.Text())
+	} else {
+		// 正常输入模式
+		val := m.In.Get()
+		m.Out.Set("V2 Engine 100Hz | Input: " + val)
+	}
 }
 
 func (m *Master) Update(msg tea.Msg) (tea.Model, tea.Cmd) {

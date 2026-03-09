@@ -16,13 +16,6 @@ func main() {
 		panic(err)
 	}
 
-	// // 播放随机音乐调用方式
-	// bgmPlayer := output.NewPlayer()
-	// err := bgmPlayer.PlaySceneBGM(output.SceneCandy)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
 	m := core.Initial() //自定义结构体初始化，看似正常
 
 	if _, err := tea.NewProgram(m).Run(); err != nil {

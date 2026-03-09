@@ -31,7 +31,7 @@ func (c *Ctrl) Resize(w, h int) {
 }
 
 func (c *Ctrl) Render(inView string) string {
-	line := "------------------------------------------"
+	line := " "
 	// 手册：JoinVertical 组合多个组件视图
 	return lipgloss.JoinVertical(lipgloss.Left, c.VP.View(), line, inView)
 }
