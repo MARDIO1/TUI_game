@@ -28,11 +28,11 @@ func Initial() *Master {
 		Tick_ms: 10,
 	}
 	
-	// 测试数据 - 使用更慢的速度和更短的文本
+	// 测试数据 - 带颜色的文本
 	m.Printer.Set([]Text{
-		{Time: 0.5, Text: "Test."},      // 每个字符0.5秒
-		{Time: 0.3, Text: "Hello."},     // 每个字符0.3秒
-		{Time: 0.4, Text: "World!"},     // 每个字符0.4秒
+		{Time: 0.5, Color: [3]uint8{255, 0, 0}, Text: "Test."},     // 红色
+		{Time: 0.3, Color: [3]uint8{0, 255, 0}, Text: "Hello."},    // 绿色
+		{Time: 0.4, Color: [3]uint8{0, 0, 255}, Text: "World!"},    // 蓝色
 	})
 	
 	return m
