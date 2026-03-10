@@ -27,14 +27,14 @@ func Initial() *Master {
 		Printer: NewPrinter(),
 		Tick_ms: 10,
 	}
-	
+
 	// 测试数据 - 带颜色的文本
 	m.Printer.Set([]Text{
-		{Time: 0.5, Color: [3]uint8{255, 0, 0}, Text: "Test."},     // 红色
-		{Time: 0.3, Color: [3]uint8{0, 255, 0}, Text: "Hello."},    // 绿色
-		{Time: 0.4, Color: [3]uint8{0, 0, 255}, Text: "World!"},    // 蓝色
+		{Time: 0.1, Color: [3]uint8{255, 0, 0}, Text: "Test."},                            // 红色
+		{Time: 0.1, Color: [3]uint8{0, 255, 0}, Text: "Hello."},                           // 绿色
+		{Time: 0.1, Color: [3]uint8{0, 0, 255}, Text: "World!测试测试测试12345678901234567890"}, // 蓝色
 	})
-	
+
 	return m
 }
 
@@ -48,11 +48,11 @@ func (m *Master) run() {
 		m.Printer.Update(float64(m.Tick_ms) / 1000.0)
 		// 显示打字机文本
 		m.Out.Set(m.Printer.Text())
-	} else {
+	} /* else {
 		// 正常输入模式
 		val := m.In.Get()
 		m.Out.Set("V2 Engine 100Hz | Input: " + val)
-	}
+	}*/
 }
 
 func (m *Master) Update(msg tea.Msg) (tea.Model, tea.Cmd) {

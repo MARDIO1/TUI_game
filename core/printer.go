@@ -7,11 +7,11 @@ import (
 
 // Printer 打字机组件
 type Printer struct {
-	queue   []Text  // 文本队列
-	idx     int     // 当前文本索引
-	pos     int     // 当前字符索引
-	timer   float64 // 计时器（秒）
-	active  bool    // 是否激活
+	queue  []Text  // 文本队列
+	idx    int     // 当前文本索引
+	pos    int     // 当前字符索引
+	timer  float64 // 计时器（秒）
+	active bool    // 是否激活
 }
 
 // colorToANSI 将RGB颜色转换为ANSI颜色代码
@@ -45,7 +45,9 @@ func (p *Printer) Update(dt float64) {
 
 	if p.timer >= t.Time {
 		p.timer = 0
-		if p.pos < len(t.Text) {
+		// 按字符计数（不是字节），支持中英文混合
+		char_count := len([]rune(t.Text))
+		if p.pos < char_count {
 			p.pos++
 		} else {
 			p.idx++
@@ -57,7 +59,7 @@ func (p *Printer) Update(dt float64) {
 // Text 获取已显示的文本（带颜色）
 func (p *Printer) Text() string {
 	var result strings.Builder
-	
+
 	for i := 0; i < p.idx; i++ {
 		if i < len(p.queue) {
 			// 完整显示已完成的文本
@@ -67,15 +69,16 @@ func (p *Printer) Text() string {
 			result.WriteString("\033[0m\n")
 		}
 	}
-	
-	// 显示当前正在输入的文本
+
+	// 显示当前正在输入的文本（转为rune数组后再切割，支持中英文混合）
 	if p.idx < len(p.queue) && p.pos > 0 {
 		color := colorToANSI(p.queue[p.idx].Color)
 		result.WriteString(color)
-		result.WriteString(p.queue[p.idx].Text[:p.pos])
+		runes := []rune(p.queue[p.idx].Text)
+		result.WriteString(string(runes[:p.pos]))
 		result.WriteString("\033[0m")
 	}
-	
+
 	return result.String()
 }
 
