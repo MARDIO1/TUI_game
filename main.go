@@ -11,7 +11,7 @@ import (
 func main() {
 	//播放固定音乐的调用方式
 	bgmPlayer := output.NewPlayer()
-	err := bgmPlayer.Play("AnimenzCallOfSilence")
+	err := bgmPlayer.Play("WetHands")
 	if err != nil {
 		panic(err)
 	}
