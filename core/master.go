@@ -89,7 +89,7 @@ func (m *Master) View() tea.View {
 
 	return v
 }
-
+//注册一个定时器，10ms后发送TickMsg消息
 func (m *Master) next_tick() tea.Cmd {
 	return tea.Tick(time.Duration(m.Tick_ms)*time.Millisecond, func(t time.Time) tea.Msg {
 		return TickMsg(t)

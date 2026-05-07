@@ -71,12 +71,22 @@ func (p *Printer) Text() string {
 	}
 
 	// 显示当前正在输入的文本（转为rune数组后再切割，支持中英文混合）
-	if p.idx < len(p.queue) && p.pos > 0 {
+	if p.idx < len(p.queue) {
 		color := colorToANSI(p.queue[p.idx].Color)
 		result.WriteString(color)
 		runes := []rune(p.queue[p.idx].Text)
-		result.WriteString(string(runes[:p.pos]))
-		result.WriteString("\033[0m")
+		pos := p.pos
+		if pos > len(runes) {
+			pos = len(runes)
+		}
+		result.WriteString(string(runes[:pos]))
+		if pos < len(runes) {
+			result.WriteString("\033[7m")
+			result.WriteString(string(runes[pos]))
+			result.WriteString("\033[0m")
+		} else {
+			result.WriteString("\033[0m")
+		}
 	}
 
 	return result.String()
