@@ -61,7 +61,7 @@ func (m *Master) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if msg.String() == "ctrl+c" {
 			return m, tea.Quit
 		}
-		m.In.Update(msg)
+		return m, m.In.Update(msg)
 	case tea.WindowSizeMsg:
 		m.Out.Resize(msg.Width, msg.Height)
 		m.In.SetWidth(msg.Width)
@@ -82,6 +82,10 @@ func (m *Master) View() tea.View {
 
 	// 3. 在这里声明“全屏模式” (取代了之前的 WithAltScreen)
 	v.AltScreen = true
+	if cur := m.In.Cursor(); cur != nil {
+		cur.Position.Y += m.Out.InputOffsetY()
+		v.Cursor = cur
+	}
 
 	return v
 }

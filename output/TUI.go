@@ -30,6 +30,10 @@ func (c *Ctrl) Resize(w, h int) {
 	}
 }
 
+func (c *Ctrl) InputOffsetY() int {
+	return c.VP.Height() + 1
+}
+
 func (c *Ctrl) Render(inView string) string {
 	line := " "
 	// 手册：JoinVertical 组合多个组件视图

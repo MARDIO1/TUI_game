@@ -14,20 +14,24 @@ func New() *Ctrl {
 	ta.Placeholder = "输入指令..." // 手册示例：直接赋值
 	ta.Focus()                 // 手册：获取焦点
 	ta.SetHeight(3)            // 手册：设置高度
+	ta.SetVirtualCursor(false)
 	return &Ctrl{Model: ta}
 }
 
 func (c *Ctrl) Focus() tea.Cmd { return c.Model.Focus() }
 func (c *Ctrl) Get() string    { return c.Model.Value() }
 func (c *Ctrl) SetWidth(w int) { c.Model.SetWidth(w) }
+func (c *Ctrl) Cursor() *tea.Cursor {
+	return c.Model.Cursor()
+}
 
 // AIchange: 手册中 View() 返回 string，但 Master 需要 tea.View
 func (c *Ctrl) View() string {
 	return c.Model.View()
 }
 
-func (c *Ctrl) Update(msg tea.Msg) {
+func (c *Ctrl) Update(msg tea.Msg) tea.Cmd {
 	var cmd tea.Cmd
 	c.Model, cmd = c.Model.Update(msg)
-	_ = cmd
+	return cmd
 }
